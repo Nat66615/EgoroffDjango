@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseNotFound
+from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 
 # Create your views here.
 zodiac_dict = {
@@ -27,4 +27,8 @@ def get_zodiac_sign(request, zodiac_sign: str):
 
 
 def get_zodiac_sign_by_number(request, zodiac_sign: int):
-    return HttpResponse(f'это число {zodiac_sign}')
+    zodiacs = list(zodiac_dict)#создаем список из ключей словаря
+    if zodiac_sign > len(zodiacs):
+        return HttpResponseNotFound(f'Неправильный порядковый номер знака - {zodiac_sign}')
+    name_zodiac = zodiacs[zodiac_sign - 1]#получаем имя зодиака путем обращения к списку по индексу
+    return HttpResponseRedirect(f'/horoscope/{name_zodiac}')#URL из основного приложения
