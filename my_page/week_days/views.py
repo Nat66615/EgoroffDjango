@@ -1,18 +1,28 @@
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseNotFound
+from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
+
+dic_week_day = {'monday': 'Понедельник!',
+                'tuesday': 'Вторник!',
+                'wednesday': 'Среда!',
+                'thursday': 'Четверг!',
+                'friday': 'Пятница!',
+                'saturday': 'Суббота!',
+                'sunday': 'Воскресенье!', }
 
 
 def get_day_of_week(request, day_of_week: str):
-    if day_of_week == 'monday':
-        return HttpResponse("Список дел понедельника")
-    elif day_of_week == 'tuesday':
-        return HttpResponse("Список дел вторника")
+    description_day = dic_week_day.get(day_of_week, None)
+    if description_day:
+        return HttpResponse(description_day)
     else:
         return HttpResponseNotFound(f'{day_of_week} не является днем недели')
 
 
 def get_day_of_week_by_number(request, day_of_week: int):
-    if day_of_week < 8:
-        return HttpResponse(f'Сегодня {day_of_week} день недели')
-    else:
-        return HttpResponse(f'Неверный номер дня {day_of_week}')
+    week = list(dic_week_day)
+    if day_of_week > len(week):
+        return HttpResponseNotFound(f'Неверный номер дня {day_of_week}')
+    day_name = dic_week_day[day_of_week - 1]
+    return HttpResponseRedirect(f'/week_days/{day_name}')
+
+
