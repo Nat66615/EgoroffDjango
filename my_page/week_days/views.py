@@ -22,7 +22,7 @@ def get_day_of_week_by_number(request, day_of_week: int):
     week = list(dic_week_day)
     if day_of_week > len(week):
         return HttpResponseNotFound(f'Неверный номер дня {day_of_week}')
-    day_name = dic_week_day[day_of_week - 1]
+    day_name = week[day_of_week - 1]
     return HttpResponseRedirect(f'/week_days/{day_name}')
 
 
