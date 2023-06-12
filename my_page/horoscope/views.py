@@ -18,6 +18,12 @@ zodiac_dict = {
     'pisces': 'Рыбы - двенадцатый знак зодиака, планеты Юпитер (с 20 февраля по 20 марта).',
 }
 
+element = {
+    "fire": ["aries", "leo", "sagittarius"],
+    "earth": ["taurus", "virgo", "capricorn"],
+    "air": ["gemini", "libra", "aquarius"],
+    "water": ["cancer", "pisces", "scorpio"]}
+
 
 def index(request):
     zodiacs = list(zodiac_dict)  # создаем список из ключей словаря
@@ -34,9 +40,12 @@ def index(request):
 
 
 def get_zodiac_sign(request, zodiac_sign: str):
-    description = zodiac_dict.get(zodiac_sign, None)
-    if description:
-        return HttpResponse(description)
+    description = zodiac_dict.get(zodiac_sign,
+                                  None)  # обращаемся к словарю с помощью метода get, куда передаем ключ. Или ключ будет найден, или вернется None
+    # ключ будет приходит с роута и если ключ найдется,то вернется описание этого ключа
+    # это описание будет помещено в переменную description
+    if description:  # если эта переменная не пустая
+        return HttpResponse(description)  # то содержание этой переменной вернется
     else:
         return HttpResponseNotFound(f'Знака с названием {zodiac_sign} не существует')
 
@@ -48,3 +57,37 @@ def get_zodiac_sign_by_number(request, zodiac_sign: int):
     name_zodiac = zodiacs[zodiac_sign - 1]  # получаем имя зодиака путем обращения к списку по индексу
     redirect_url = reverse('horoscope_name', args=(name_zodiac,))
     return HttpResponseRedirect(redirect_url)  # URL из основного приложения
+
+
+def type(request):
+    type_list = list(element)  # создаем список из ключей словаря стихий
+    li_elements = ''
+    for elem in type_list:  # получаем каждую стихию
+        #signs_in_type = element(elem)
+
+        li_elements += f"<li><a>{elem.title()}</a></li>"  # строим список из названий стихий, каждый элемент должен быть ссылкой на значение словаря(в котором три знака)
+    response = f"""    
+        <ol>
+            {li_elements}
+        </ol>
+    """  # оборачиваем готовый список в теги,для вывода списка Html
+    return HttpResponse(response)
+
+
+def get_sign_for_element(request, one_element):
+    check = element.get(one_element, None)
+    if check:
+        # если эта переменная не пустая, в ней список из знаков, подвластных этой стихии, нужно вывести список, оформленный тегами
+        element_type = ''
+        for sign in check:
+            redirect_path = reverse('horoscope_name', args=[sign])
+            element_type += f"<li><a href='{redirect_path}'>{sign.title()}</a></li>"
+        response = f"""
+            <ul>
+                {element_type}
+            </ul>
+            """
+        return HttpResponse(response)
+    else:
+        return HttpResponseNotFound(f'Стихии с названием {one_element} не существует')
+
