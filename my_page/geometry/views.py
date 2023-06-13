@@ -32,3 +32,15 @@ def get_square_area_redirect(request, width):
 def get_circle_area_redirect(request, radius):
     redirect_url = reverse('name_circle_url', args=(radius,))
     return HttpResponseRedirect(redirect_url)
+
+
+def get_title_rectangle(request):
+    return render(request, 'geometry/rectangle.html')
+
+
+def get_title_square(request):
+    return render(request, 'geometry/square.html')
+
+
+def get_title_cirkle(request):
+    return render(request, 'geometry/circle.html')

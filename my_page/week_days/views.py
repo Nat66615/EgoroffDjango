@@ -11,6 +11,9 @@ dic_week_day = {'monday': 'Понедельник!',
                 'sunday': 'Воскресенье!', }
 
 
+def title(request):
+    return render(request, 'week_days/greeting.html')
+
 def get_day_of_week(request, day_of_week: str):
     description_day = dic_week_day.get(day_of_week, None)
     if description_day:
