@@ -52,7 +52,11 @@ def index(request):
 #        return HttpResponseNotFound(f'Знака с названием {zodiac_sign} не существует')
 
 def get_zodiac_sign(request, zodiac_sign: str):
-    return render(request, 'horoscope/info_zodiac.html')
+    description = zodiac_dict.get(zodiac_sign, None)
+    data = {
+        'description_zodiac': description,
+    }
+    return render(request, 'horoscope/info_zodiac.html', context=data)
 
 
 
