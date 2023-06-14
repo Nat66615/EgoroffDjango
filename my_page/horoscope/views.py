@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.urls import reverse
 from django.template.loader import render_to_string
+from dataclasses import dataclass
 
 # Create your views here.
 zodiac_dict = {
@@ -40,24 +41,34 @@ def index(request):
     return HttpResponse(response)
 
 
-#закоментированна полностью ниже редактированная на теме про шаблон
-#def get_zodiac_sign(request, zodiac_sign: str):
+# закоментированна полностью ниже редактированная на теме про шаблон
+# def get_zodiac_sign(request, zodiac_sign: str):
 #    description = zodiac_dict.get(zodiac_sign, None)
-    # обращаемся к словарю с помощью метода get, куда передаем ключ. Или ключ будет найден, или вернется None
-    # ключ будет приходит с роута и если ключ найдется,то вернется описание этого ключа
-    # это описание будет помещено в переменную description
+# обращаемся к словарю с помощью метода get, куда передаем ключ. Или ключ будет найден, или вернется None
+# ключ будет приходит с роута и если ключ найдется,то вернется описание этого ключа
+# это описание будет помещено в переменную description
 #    if description:  # если эта переменная не пустая
 #        return HttpResponse(description)  # то содержание этой переменной вернется
 #    else:
 #        return HttpResponseNotFound(f'Знака с названием {zodiac_sign} не существует')
+#@dataclass
+# class Person:
+#    name: str
+#    age: int
 
 def get_zodiac_sign(request, zodiac_sign: str):
     description = zodiac_dict.get(zodiac_sign, None)
     data = {
         'description_zodiac': description,
+        'sign': zodiac_sign.title(),
+        'my_int': 123,
+        'my_float': 5.66,
+        'my_list': [1, 2, 3, ],
+        'my_tuple': (4, 5, 58),
+        'my_dict': {'name': 'Jack', 'age': 40},
+        # 'my_class': Person('Will', 55),
     }
     return render(request, 'horoscope/info_zodiac.html', context=data)
-
 
 
 def get_zodiac_sign_by_number(request, zodiac_sign: int):
@@ -73,7 +84,7 @@ def type(request):
     type_list = list(element)  # создаем список из ключей словаря стихий
     li_elements = ''
     for elem in type_list:  # получаем каждую стихию
-        #signs_in_type = element(elem)
+        # signs_in_type = element(elem)
 
         li_elements += f"<li><a>{elem.title()}</a></li>"  # строим список из названий стихий, каждый элемент должен быть ссылкой на значение словаря(в котором три знака)
     response = f"""    
@@ -100,4 +111,3 @@ def get_sign_for_element(request, one_element):
         return HttpResponse(response)
     else:
         return HttpResponseNotFound(f'Стихии с названием {one_element} не существует')
-
