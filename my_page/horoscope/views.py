@@ -29,17 +29,11 @@ element = {
 
 def index(request):
     zodiacs = list(zodiac_dict)  # создаем список из ключей словаря
-    li_elements = ''
-    for sign in zodiacs:
-        redirect_path = reverse('horoscope_name', args=[sign])
-        li_elements += f"<li><a href='{redirect_path}'>{sign.title()}</a></li>"
-    response = f"""
-        <ul>
-            {li_elements}
-        </ul>
-        """
-    return HttpResponse(response)
-
+    # f"<li><a href='{redirect_path}'>{sign.title()}</a></li>"
+    content = {
+        'zodiacs': zodiacs
+    }
+    return render(request, 'horoscope/index.html', context=content)
 
 # закоментированна полностью ниже редактированная на теме про шаблон
 # def get_zodiac_sign(request, zodiac_sign: str):
