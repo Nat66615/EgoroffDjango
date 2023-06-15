@@ -55,12 +55,7 @@ def get_zodiac_sign(request, zodiac_sign: str):
     data = {
         'description_zodiac': description,
         'sign': zodiac_sign.title(),
-        'my_int': 123,
-        'my_float': 5.66,
-        'my_list': [1, 2, 3, ],
-        'my_tuple': (4, 5, 58),
-        'my_dict': {'name': 'Jack', 'age': 40},
-        # 'my_class': Person('Will', 55),
+
     }
     return render(request, 'horoscope/info_zodiac.html', context=data)
 
