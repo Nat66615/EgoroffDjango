@@ -1,8 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.urls import reverse
-from django.template.loader import render_to_string
-from dataclasses import dataclass
 
 # Create your views here.
 zodiac_dict = {
@@ -35,20 +33,6 @@ def index(request):
     }
     return render(request, 'horoscope/index.html', context=content)
 
-# закоментированна полностью ниже редактированная на теме про шаблон
-# def get_zodiac_sign(request, zodiac_sign: str):
-#    description = zodiac_dict.get(zodiac_sign, None)
-# обращаемся к словарю с помощью метода get, куда передаем ключ. Или ключ будет найден, или вернется None
-# ключ будет приходит с роута и если ключ найдется,то вернется описание этого ключа
-# это описание будет помещено в переменную description
-#    if description:  # если эта переменная не пустая
-#        return HttpResponse(description)  # то содержание этой переменной вернется
-#    else:
-#        return HttpResponseNotFound(f'Знака с названием {zodiac_sign} не существует')
-#@dataclass
-# class Person:
-#    name: str
-#    age: int
 
 def get_zodiac_sign(request, zodiac_sign: str):
     description = zodiac_dict.get(zodiac_sign, None)
@@ -74,7 +58,6 @@ def type(request):
     li_elements = ''
     for elem in type_list:  # получаем каждую стихию
         # signs_in_type = element(elem)
-
         li_elements += f"<li><a>{elem.title()}</a></li>"  # строим список из названий стихий, каждый элемент должен быть ссылкой на значение словаря(в котором три знака)
     response = f"""    
         <ol>
