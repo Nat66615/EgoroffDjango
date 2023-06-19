@@ -36,9 +36,12 @@ def index(request):
 
 def get_zodiac_sign(request, zodiac_sign: str):
     description = zodiac_dict.get(zodiac_sign, None)
+    zodiacs = list(zodiac_dict)
     data = {
         'description_zodiac': description,
         'sign': zodiac_sign.title(),
+        'sign_name': description.split()[0],
+        'zodiacs': zodiacs
 
     }
     return render(request, 'horoscope/info_zodiac.html', context=data)
